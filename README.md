@@ -154,4 +154,30 @@ You can also set en vars in the `.gitpod.yml` but this can only contain non-sens
 
 
 
+## AWS CLI Installation
+
+AWS CLI is installed for this project via the bash script ['./bin/install_aws_cli']
+
+[Getting Started Install CLI] https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+
+[AWS CLI Env Vars](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html) 
+
+We can check if our AWS credentials are configured correctly by running the following AWS CLI command:
+```sh
+aws sts get-caller-identity
+```
+
+If it is successful you should see a json payload that looks something like this:
+
+gitpod /workspace/terraform-beginner-bootcamp-2023 (7-refactor-aws-cli-script) $ aws sts get-caller-identity
+
+```json
+{
+    "UserId": "AIDAYGQ23EOXPR55LBVVL",
+    "Account": "563770762123",
+    "Arn": "arn:aws:iam::563770762123:user/admin"
+}
+```
+
+We'll need to generate AWS CLI credentials from an IAM user in order to access the user AWS CLI.
 

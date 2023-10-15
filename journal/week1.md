@@ -1,5 +1,29 @@
 # Terraform Beginner Bootcamp 2023 - Week 1
 
+## Fixing Tags
+
+[How to Delete Local and Remote Tags on Git](https://devconnected.com/how-to-delete-local-and-remote-tags-on-git/)
+
+Locall delete a tag
+```sh
+git tag -d <tag_name>
+```
+
+Remotely delete tag
+
+```sh
+git push --delete origin tagname
+```
+
+Checkout the commit that you want to retag. Grab the sha from your Github history.
+
+```sh
+git checkout <SHA>
+git tag M.M.P
+git push --tags
+git checkout main
+```
+
 ## Root Module Structure
 
 Our root module structure is as follows:
@@ -149,20 +173,6 @@ resource "aws_s3_object" "index_html" {
   source = "${path.root}/public/index.html"
 }
 
-### Path Variable
-
-In terraform there is a special variable called `path` that allows us to reference local paths:
-- path.module = get the path for the current module
-- path.root = get the path for the root module
-[Special Path Variable](https://developer.hashicorp.com/terraform/language/expressions/references#filesystem-and-workspace-info)
-
-
-resource "aws_s3_object" "index_html" {
-  bucket = aws_s3_bucket.website_bucket.bucket
-  key    = "index.html"
-  source = "${path.root}/public/index.html"
-}
-
 ## Terraform Locals
 
 Locals allows us to define local variables.
@@ -201,6 +211,7 @@ We use the jsonencode to create the json policy inline in the hcl.
 
 [jsonencode](https://developer.hashicorp.com/terraform/language/functions/jsonencode)
 
+
 ### Changing the Lifecycle of Resources
 
 [Meta Arguments Lifcycle](https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle)
@@ -212,7 +223,55 @@ Plain data values such as Local Values and Input Variables don't have any side-e
 
 https://developer.hashicorp.com/terraform/language/resources/terraform-data
 
+## Provisioners
 
+Provisioners allow you to execute commands on compute instances eg. a AWS CLI command.
 
+They are not recommended for use by Hashicorp because Configuration Management tools such as Ansible are a better fit, but the functionality exists.
+
+[Provisioners](https://developer.hashicorp.com/terraform/language/resources/provisioners/syntax)
+
+### Local-exec
+
+This will execute command on the machine running the terraform commands eg. plan apply
+
+```tf
+resource "aws_instance" "web" {
+  # ...
+
+  provisioner "local-exec" {
+    command = "echo The server's IP address is ${self.private_ip}"
+  }
+}
+```
+
+https://developer.hashicorp.com/terraform/language/resources/provisioners/local-exec
+
+### Remote-exec
+
+This will execute commands on a machine which you target. You will need to provide credentials such as ssh to get into the machine.
+
+```tf
+resource "aws_instance" "web" {
+  # ...
+
+  # Establishes connection to be used by all
+  # generic remote provisioners (i.e. file/remote-exec)
+  connection {
+    type     = "ssh"
+    user     = "root"
+    password = var.root_password
+    host     = self.public_ip
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "puppet apply",
+      "consul join ${aws_instance.web.private_ip}",
+    ]
+  }
+}
+```
+https://developer.hashicorp.com/terraform/language/resources/provisioners/remote-exec
 
 

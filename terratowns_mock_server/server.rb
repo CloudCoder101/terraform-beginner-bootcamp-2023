@@ -28,13 +28,15 @@ class Home
   # home.town() # getter
 attr_accessor :town, :name, :description, :domain_name, :content_version
 
-  validates :town, presence: true inclusion: { in: [
+  validates :town, presence: true, inclusion: { 
+    in: [
       'melomaniac-mansion',
       'cooker-cove',
       'video-valley',
       'the-nomad-pad',
       'gamers-grotto'
-  ] }
+    ]
+  }
     # visible to all users
   validates :name, presence: true
     # visible to all users
@@ -205,7 +207,6 @@ class TerraTownsMockServer < Sinatra::Base
     # Validate payload data
     name = payload["name"]
     description = payload["description"]
-    domain_name = payload["domain_name"]
     content_version = payload["content_version"]
 
     unless params[:uuid] == $home[:uuid]
@@ -214,10 +215,11 @@ class TerraTownsMockServer < Sinatra::Base
 
     home = Home.new
     home.town = $home[:town]
+    home.domain_name= $home[:domain_name]
     home.name = name
     home.description = description
-    home.domain_name = domain_name
     home.content_version = content_version
+    
 
     unless home.valid?
       error 422, home.errors.messages.to_json
@@ -237,8 +239,9 @@ class TerraTownsMockServer < Sinatra::Base
       error 404, "failed to find home with provided uuid and bearer token"
     end
 
+    uuid = $home[:uuid]
     $home = {}
-    { message: "House deleted successfully" }.to_json
+    { uuid: uuid }.to_json
   end
 end
 

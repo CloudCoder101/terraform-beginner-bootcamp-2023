@@ -2,7 +2,6 @@
 // The main package is special in Go, it's where the execution of the program starts.
 package main
 
-
 // fmt is short format, it contains functions for formatted I/O.
 import (
 	"bytes"
@@ -25,12 +24,6 @@ func main() {
 	// Format.PrintLine
 	// Prints to standard output
 	fmt.Println("Hello, world!")
-}
-
-type Config struct {
-	Endpoint string
-	Token string
-	UserUuid string
 }
 
 type Config struct {

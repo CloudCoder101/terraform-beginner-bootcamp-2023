@@ -10,26 +10,34 @@ variable "teacherseat_user_uuid" {
 type = string
 }
 
-variable "bucket_name" {
-type = string
+variable "arcanum" {
+  type = object({
+    public_path = string
+    content_version = number
+    
+  })
 }
 
-variable "index_html_filepath" {
-  type        = string
+variable "payday" {
+  type = object({
+    public_path = string
+    content_version = number
+    
+  })
 }
 
-variable "error_html_filepath" {
-  type        = string
-}
+# variable "content_version" {
+#   type        = number
+# }
 
-variable "content_version" {
-  type        = number
-}
 
-variable "assets_path" {
-  type        = string
-  default     = "./public/assets/"
-}
+# variable "payday_public_path" {
+#   type    = string
+# }
+
+
+
+
 
 
   

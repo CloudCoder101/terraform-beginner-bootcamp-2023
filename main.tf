@@ -37,15 +37,17 @@ module "home_arcanum_hosting" {
 
 
 resource "terratowns_home" "home" {
-  name = "How to play Arcanum in 2023 and 2024!"
+  name = "The best submarine games on PC 2023"
   description = <<DESCRIPTION
-Arcanum is a game from 2001 that shipped with alot of bugs.
-Modders have removed all the originals making this game really fun
-to play (despite that old look graphics). This is my guide that will
-show you how to play arcanum without spoiling the plot.
+What are the best submarine games on PC? 
+Submarine simulator games were reasonably popular back in the 90s, 
+but if you are looking for new submarine games, your options are much more limited. 
+If you are willing to go through all the hassle of making some of those 90s classics like Silent Hunter, 
+Silent Service, and Aces of the Deep run on a modern PC, then power to you. However, 
+if you are looking for more modern PC games with submarines, this list boasts plenty of solid sub battlers.
 DESCRIPTION
   domain_name = module.home_arcanum_hosting.domain_name
-  town = "missingo"
+  town = "gamers-grotto"
   content_version = var.arcanum.content_version
 }
 module "home_payday_hosting" {
@@ -64,7 +66,7 @@ with an online recipe.
 
 DESCRIPTION
   domain_name = module.home_payday_hosting.domain_name
-  town = "missingo"
+  town = "cooker-cove"
   content_version = var.payday.content_version
 }
 
